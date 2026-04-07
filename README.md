@@ -1,4 +1,4 @@
-# Airline_Reservation_normalizationProject
+# Airline Reservation normalization Project
 Airline reservation system and database normalization project. Includes data processing, functional dependency analysis, normalization (1NF to BCNF), SQL script generation, MySQL database population, and an interactive query interface built in Python.
 
 ## Additional Notes
@@ -44,3 +44,82 @@ To successfully run `Project1-pB.py`, **local file loading must be enabled** for
 **In Python:**
 ```python
 mysql.connector.connect(..., allow_local_infile=True)
+
+## File Descriptions
+
+### **Project1-pA.py**
+This file implements the core *airline reservation system* and populates the initial database.
+
+- **Step 1 – Data Parsing**
+  - Parses *PNR.xml* using `xml.etree.ElementTree`
+  - Converts data into a structured CSV using `csv` and `pandas`
+  - Loads airport codes from `IATA.txt`
+
+- **Step 2 – Database Setup**
+  - Connects to MySQL using `mysql.connector`
+  - Prepares relational tables for the reservation system
+
+- **Step 3 – Passenger Insertion**
+  - Inserts passenger records into MySQL using `executemany` for efficiency
+
+- **Step 4 – Flight Generation**
+  - Groups passenger data (`pandas.groupby`) to generate unique flights
+  - Inserts flight records into the database
+
+- **Step 5 – Seat Initialization**
+  - Dynamically generates seat layouts for each class (*First, Business, Economy*)
+  - Uses optimized batch inserts and indexing for performance
+
+- **Step 6 – Passenger Sorting**
+  - Orders passengers by travel date and booking time for fair processing
+
+- **Step 7 – Reservation Logic**
+  - Implements seat assignment rules:
+    - *requested class allocation*
+    - *automatic upgrades/downgrades*
+    - *seat splitting across classes*
+    - *cancellation if no seats available*
+  - Uses in-memory structures (`defaultdict`, `deque`) for efficiency
+
+- **Step 8 – Check-In Simulation**
+  - Randomly assigns check-in status and times using `random` and `datetime`
+
+Overall, this file builds and populates the **operational airline reservation database**. :contentReference[oaicite:0]{index=0}
+
+---
+
+### **Project1-pB.py**
+This file performs *data analysis, normalization, and database restructuring* based on the output of Part A.
+
+- **Step 1 – CSV Data Import**
+  - Extracts combined dataset from MySQL into `PNR_full.csv`
+  - Loads data into `pandas` and displays dataset structure
+
+- **Step 2 – Functional Dependency Analysis**
+  - Accepts user-defined functional dependencies
+  - Computes attribute closures
+  - Identifies:
+    - *partial dependencies*
+    - *transitive dependencies*
+  - Determines candidate keys using combinatorial logic (`itertools.combinations`)
+
+- **Step 3 – Normalization**
+  - Verifies **1NF, 2NF, and 3NF**
+  - Detects violations and groups dependencies
+  - Performs **BCNF decomposition** into structured tables
+
+- **Step 4 – SQL Script Generation**
+  - Creates normalized datasets using `pandas`
+  - Generates CSV files for each table
+  - Writes SQL script (`Project1-pB.sql`) including:
+    - table creation
+    - bulk data loading via `LOAD DATA LOCAL INFILE`
+
+- **Step 5 – Database Creation & Query Interface**
+  - Executes SQL script to build normalized tables in MySQL
+  - Verifies table population
+  - Provides a simple interactive SQL interface for:
+    - *SELECT queries*
+    - *INSERT, UPDATE, DELETE operations*
+
+Overall, this file transforms the dataset into a **normalized relational schema and enables querying of the final database**. :contentReference[oaicite:1]{index=1}
