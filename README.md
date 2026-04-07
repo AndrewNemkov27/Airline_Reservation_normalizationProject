@@ -156,8 +156,18 @@ These files can be regenerated using the provided scripts.
 
 ## Important Configuration
 
-To run `Project1-pB.py`, **local file loading must be enabled**.
+To run `Project1-pB.py`, **local file loading must be enabled in both python and SQL. Below is the code needed to complete this**.
 
 ### **Python**
 ```python
 mysql.connector.connect(..., allow_local_infile=True)
+```
+
+## **MySQL**
+```sql
+SHOW GLOBAL VARIABLES LIKE 'local_infile';
+SET GLOBAL local_infile = 1;
+SHOW GLOBAL VARIABLES LIKE 'local_infile';
+```
+
+
